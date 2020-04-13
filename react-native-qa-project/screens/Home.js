@@ -1,62 +1,64 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import {
-  StyleSheet,
-  FlatList,
-  RefreshControl,
-  Text,
-  TouchableOpacity,
-} from 'react-native';
+import { StyleSheet, FlatList, Text, TouchableOpacity } from 'react-native';
 import PalettePreview from '../components/PalettePreview';
 
-const URL = 'https://color-palette-api.kadikraman.now.sh/palettes';
-
-const Home = ({ navigation }) => {
-  const [palettes, setPalettes] = useState([]);
+const Home = ({ navigation, route }) => {
+  const newColorPalette = route.params
+    ? route.params.newColorPalette
+    : undefined;
+  const [colorPalettes, setColorPalettes] = useState([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const handleFetchPalettes = useCallback(async () => {
-    const response = await fetch(URL);
-    if (response.ok) {
+  const fetchColorPalettes = useCallback(async () => {
+    const result = await fetch(
+      'https://color-palette-api.kadikraman.now.sh/palettes',
+    );
+    if (result.ok) {
       const palettes = await response.json();
-      setPalettes(palettes);
+      setColorPalettes(palettes);
     }
   }, []);
 
   useEffect(() => {
-    handleFetchPalettes();
+    fetchColorPalettes();
   }, []);
 
   const handleRefresh = useCallback(async () => {
     setIsRefreshing(true);
-    await handleFetchPalettes();
+    await fetchColorPalettes();
     setTimeout(() => {
       setIsRefreshing(false);
     }, 1000);
-  });
+  }, []);
+
+  useEffect(() => {
+    if (newColorPalette) {
+      setColorPalettes(palettes => [newColorPalette, ...palettes]);
+    }
+  }, [newColorPalette]);
 
   return (
-    <>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate('AddNewPalette')}
-      >
-        <Text style={styles.buttonText}>Add a color scheme</Text>
-      </TouchableOpacity>
-      <FlatList
-        style={styles.list}
-        data={palettes}
-        keyExtractor={item => item.paletteName}
-        renderItem={({ item }) => (
-          <PalettePreview
-            onPress={() => navigation.push('ColorPalette', item)}
-            palette={item}
-          />
-        )}
-        refreshControl={
-          <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />
-        }
-      />
-    </>
+    <FlatList
+      style={styles.list}
+      data={colorPalettes}
+      keyExtractor={item => item.paletteName}
+      renderItem={({ item }) => (
+        <PalettePreview
+          onPress={() => navigation.push('ColorPalette', item)}
+          palette={item}
+        />
+      )}
+      refreshing={isRefreshing}
+      onRefresh={handleRefresh}
+      ListHeaderComponent={
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('ColorPaletteModal')}
+        >
+          <Text style={styles.buttonText}>Add a color scheme</Text>
+        </TouchableOpacity>
+      }
+    />
   );
 };
 
@@ -75,6 +77,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: 'teal',
+    marginBottom: 10,
   },
 });
 

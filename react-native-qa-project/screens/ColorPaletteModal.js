@@ -176,21 +176,17 @@ const ColorPaletteModal = ({ navigation }) => {
     }
   }, [name, selectedColors]);
 
-  const handleValueChange = useCallback(
-    (value,
-    color => {
-      if (value === true) {
-        setSelectedColors(colors => [...colors, color]);
-      } else {
-        setSelectedColors(colors =>
-          colors.filter(
-            selectedColor => color.colorName !== selectedColor.colorName,
-          ),
-        );
-      }
-    },
-    []),
-  );
+  const handleValueChange = useCallback((value, color) => {
+    if (value === true) {
+      setSelectedColors(colors => [...colors, color]);
+    } else {
+      setSelectedColors(colors =>
+        colors.filter(
+          selectedColor => color.colorName !== selectedColor.colorName,
+        ),
+      );
+    }
+  }, []);
 
   return (
     <View style={styles.container}>
