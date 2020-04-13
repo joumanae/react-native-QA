@@ -216,10 +216,11 @@ const ColorPaletteModal = ({ navigation }) => {
           </View>
         )}
       />
-      <TouchableOpacity style={styles.buttonText} onPress={handleSubmit}>
-        <Text>Submit</Text>
+      <TouchableOpacity onPress={handleSubmit}>
+        <View style={styles.button}>
+          <Text style={styles.buttonText}>Submit</Text>
+        </View>
       </TouchableOpacity>
-      <Text>Hello, I'm a modal</Text>
     </View>
   );
 };

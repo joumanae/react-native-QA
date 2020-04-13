@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   buttonText: {
+    height: 50,
     fontSize: 24,
     fontWeight: 'bold',
     color: 'teal',
