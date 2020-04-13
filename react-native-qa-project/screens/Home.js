@@ -69,7 +69,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   button: {
-    height: 50,
     backgroundColor: 'white',
     padding: 10,
   },
