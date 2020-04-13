@@ -14,7 +14,7 @@ const Home = ({ navigation, route }) => {
       'https://color-palette-api.kadikraman.now.sh/palettes',
     );
     if (result.ok) {
-      const palettes = await response.json();
+      const palettes = await result.json();
       setColorPalettes(palettes);
     }
   }, []);
