@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Alert,
   Switch,
-  Flatlist,
+  FlatList,
 } from 'react-native';
 const COLORS = [
   { colorName: 'AliceBlue', hexCode: '#F0F8FF' },
@@ -197,7 +197,7 @@ const ColorPaletteModal = ({ navigation }) => {
         onChangeText={setName}
         placeholder="Palette Name"
       />
-      <Flatlist
+      <FlatList
         data={COLORS}
         keyExtractor={item => item.colorName}
         renderItem={({ item }) => (
